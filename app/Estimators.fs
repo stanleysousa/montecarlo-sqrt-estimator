@@ -22,5 +22,5 @@ module Sqrt =
           //Filter the samples outside of the rectangle and count
           let sumG = Y |> Seq.filter(fun y -> indicator y v) |> Seq.length |> float
           
-          //Calculate the estimated value and returns
+          //Calculate the estimated value for sqrt(v) and returns
           (float)n/sumG
