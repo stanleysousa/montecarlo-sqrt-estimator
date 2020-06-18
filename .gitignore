@@ -35,3 +35,9 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+# Latex
+*.tex
+*.synctex.gz
+[Dd]oc/*.log
+[Dd]oc/*.aux
