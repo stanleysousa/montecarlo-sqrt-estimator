@@ -12,9 +12,9 @@ Estimates the square root of a number using the Monte Carlo method. For more inf
 - On a terminal go to the [\app](../app) folder and execute "dotnet run .\MCSqrtEstimator.fsproj"
 
 ## Result
-The reference value for sqrt(2.000000) is: 1.414214\
-The estimated value for sqrt(2.000000) using Monte Carlo is:\
-  1.455604 e=0.041391 from 1000 samples\
-  1.420656 e=0.006443 from 10000 samples\
-  1.411353 e=0.002861 from 100000 samples\
-  1.414597 e=0.000384 from 1000000 samples
+sqrt(2.000000): ref=1.414214 est=1.470588 delta=0.056375 epsilon=0.038335 for 100 samples\
+sqrt(2.000000): ref=1.414214 est=1.371742 delta=0.042471 epsilon=0.030962 for 1000 samples\
+sqrt(2.000000): ref=1.414214 est=1.410039 delta=0.004174 epsilon=0.002960 for 10000 samples\
+sqrt(2.000000): ref=1.414214 est=1.413128 delta=0.001086 epsilon=0.000768 for 100000 samples\
+sqrt(2.000000): ref=1.414214 est=1.414851 delta=0.000638 epsilon=0.000451 for 1000000 samples\
+sqrt(2.000000): ref=1.414214 est=1.414651 delta=0.000437 epsilon=0.000309 for 10000000 samples
