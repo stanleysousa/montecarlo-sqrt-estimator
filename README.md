@@ -12,9 +12,12 @@ Estimates the square root of a number using the Monte Carlo method. For more inf
 - On a terminal go to the [\app](../app) folder and execute "dotnet run .\MCSqrtEstimator.fsproj"
 
 ## Result
-sqrt(2.000000): ref=1.414214 est=1.470588 delta=0.056375 epsilon=0.038335 for 100 samples\
-sqrt(2.000000): ref=1.414214 est=1.371742 delta=0.042471 epsilon=0.030962 for 1000 samples\
-sqrt(2.000000): ref=1.414214 est=1.410039 delta=0.004174 epsilon=0.002960 for 10000 samples\
-sqrt(2.000000): ref=1.414214 est=1.413128 delta=0.001086 epsilon=0.000768 for 100000 samples\
-sqrt(2.000000): ref=1.414214 est=1.414851 delta=0.000638 epsilon=0.000451 for 1000000 samples\
-sqrt(2.000000): ref=1.414214 est=1.414651 delta=0.000437 epsilon=0.000309 for 10000000 samples
+sqrt(2.000000): ref=1.414214 est=1.426534 e_n=0.008712 for 1000 samples\
+sqrt(2.000000): ref=1.414214 est=1.432665 e_n=0.013047 for 2000 samples\
+sqrt(2.000000): ref=1.414214 est=1.410437 e_n=0.002670 for 3000 samples\
+sqrt(2.000000): ref=1.414214 est=1.417937 e_n=0.002633 for 4000 samples\
+sqrt(2.000000): ref=1.414214 est=1.419648 e_n=0.003843 for 5000 samples\
+sqrt(2.000000): ref=1.414214 est=1.406140 e_n=0.005709 for 6000 samples\
+sqrt(2.000000): ref=1.414214 est=1.434426 e_n=0.014293 for 7000 samples\
+sqrt(2.000000): ref=1.414214 est=1.408947 e_n=0.003724 for 8000 samples\
+sqrt(2.000000): ref=1.414214 est=1.413317 e_n=0.000634 for 9000 samples
