@@ -3,8 +3,6 @@ namespace Plot
 module Line =
     open XPlot.GoogleCharts
 
-    type point = {x:float; y:float}
-
     let plot data title =
         let xy: (int * float) list = data
 
