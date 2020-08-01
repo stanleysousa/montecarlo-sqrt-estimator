@@ -1,5 +1,5 @@
 # montecarlo-sqrt-estimator
-Estimates the square root of a number using the Monte Carlo method. For more information see the [documentation](./doc/mc_sqrt.pdf).
+Estimates the square root of a number using the Monte Carlo method. For more information see the [documentation](./docs/mc_sqrt.pdf).
 
 ## How to use
 - You need [.NET Core 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1) runtime
