@@ -41,3 +41,5 @@ msbuild.wrn
 *.synctex.gz
 [Dd]oc/*.log
 [Dd]oc/*.aux
+
+.fake

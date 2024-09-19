@@ -1,19 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
-    <Compile Include="Estimators.fs" />
+    <Compile Include="MathHelpers.fs" />
+    <Compile Include="MonteCarlo.fs" />
     <Compile Include="Plot.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics.FSharp" Version="4.11.0" />
     <PackageReference Include="XPlot.GoogleCharts" Version="3.0.1" />
   </ItemGroup>
-
 </Project>

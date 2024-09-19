@@ -1,34 +1,65 @@
-﻿// Learn more about F# at http://fsharp.org
+﻿//namespace MCSqrtEstimator
 
 open System
-open Estimators
+open MCSqrtEstimator
 open Plot
 
-let estimate v n =
-    let estimated = Sqrt.estimate v n
-    let reference = Math.Sqrt(v)
-    let e_n = Math.Abs(estimated-reference)/reference
-    printfn "sqrt(%f): ref=%f est=%f e_n=%f for %d samples" v reference estimated e_n n
-    n, e_n
+let plotErrors mc = 
+    let errors =
+        mc
+        |> List.map (fun e -> e.samples, e.error)
+
+    let v = mc.Head.baseValue
+
+    let title = sprintf "Relative error for v=%f and n samples" v
+    Line.plot errors title
+
+let simulate value = 
+    // Controls the number of samples
+    let steps = 6
+
+    // Create a list with an increasing number of samples
+    let numbersOfSamples =
+        List.init   steps (fun i -> [0..(pown 10 (i))..(pown 10 (i+1))])
+        |> List.collect (fun l -> (l |> List.skip 2))
+
+    // Estimates using the number of samples
+    List.init (numbersOfSamples |>Seq.length) (fun i -> MonteCarlo.Sqrt.simulate value (numbersOfSamples.[i]))
+
+
+let trySimulate  (value : string) =
+    try 
+        let number =
+            value
+            |> float
+
+        if number >= 1.0 then
+            let estimates =
+                simulate number
+                
+            // Print results
+            estimates
+            |> List.iter (fun e -> MonteCarlo.print e)
+
+            // Plot errors chart
+            plotErrors estimates
+            true
+        else
+            false
+    with
+        | :? FormatException ->
+            false
 
 [<EntryPoint>]
-let main _ =
-    //number to calculate the square root
-    let v = 2.0
-
-    //sampling parameters
-    let x1 =[1..1..(pown 10 2)]
-    let x2 =[(pown 10 2)..10..(pown 10 3)]
-    let x3 =[(pown 10 3)..100..(pown 10 4)]
-    let x4 =[(pown 10 4)..1000..(pown 10 5)]
-    let x5 =[(pown 10 5)..10000..(pown 10 6)]
-    let x = x1 @ x2 @ x3@ x4@ x5
-
-    //Estimates and generate plot data
-    let data = List.init (x |>Seq.length) (fun i -> estimate v (x.[i]))
-
-    //plot result
-    let title = "Erro relativo do estimador"
-    Line.plot data title
-
-    0 // return an integer exit code
+let main argv =
+    match argv.Length with
+    | 0 -> printf "Missing argument. Please provide a number."
+           1
+    | 1 -> if trySimulate argv.[0] then
+                printfn "Simulation complete."
+                0
+           else
+                printfn "Invalid argument, please provide a number greater or equal to 1."
+                1
+    | _ -> printf "Too many arguments. Please provide a single number."
+           1
