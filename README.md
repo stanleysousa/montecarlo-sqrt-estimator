@@ -3,11 +3,11 @@ Estimates the square root of a number using the Monte Carlo method. For more inf
 
 ## How to use
 - You need [.NET6.0](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) runtime
-- On a terminal go to the [\app](../app) folder and execute "dotnet run \<v\>"
+- On a terminal go to the [\app](../app) folder and execute "dotnet run \<v\> \<p\>"
 # Example
 
 ```
-PS ...\app> dotnet run 3.8
+PS ...\app> dotnet run 3.8 6
 sqrt(3.800000): ref=1.949359 est=2.000000 e_n=0.025978 for 2 samples
 sqrt(3.800000): ref=1.949359 est=1.500000 e_n=0.230516 for 3 samples
 sqrt(3.800000): ref=1.949359 est=2.000000 e_n=0.025978 for 4 samples
