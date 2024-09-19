@@ -58,7 +58,7 @@ module MonteCarlo =
                // Returns the estimated value for sqrt(v)
                m |> invert
 
-          ///<summary>Estimates the square root of 'v' using the Monte Carlo method.</summary>
+          ///<summary>Runs the Monte Carlo simulation to estimate the square root of 'v'.</summary>
           ///<param name="v">The value for which the square root will be estimated.</param>
           ///<param name="n">Number of samples.</param>
           ///<returns>Simulation result for sqrt(v).</returns>
