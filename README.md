@@ -3,7 +3,7 @@ Estimates the square root of a number using the Monte Carlo method. For more inf
 
 ## How to use
 - You need [.NET6.0](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) runtime
-- On a terminal go to the [\app](../app) folder and execute "dotnet run \<v\> \<p\>"
+- On a terminal go to the [\app](../app) folder and execute "dotnet run \<v:float\> \<p:int\>"
 # Example
 
 ```
