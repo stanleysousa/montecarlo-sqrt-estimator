@@ -23,7 +23,7 @@ let trySimulate value power =
             List.init p (fun i -> [0..(pown 10 (i))..(pown 10 (i+1))]) // Create lists with an increasing number of samples
             |> List.collect (fun l -> (l |> List.skip 2)) // Flattens the list skipping the first two items
             |> List.map (fun n -> MonteCarlo.Sqrt.simulate v n) // Runs the simulations
-            |> List.map (fun s -> MonteCarlo.print s) // Print results
+            |> List.map (fun s -> MonteCarlo.Sqrt.print s) // Print results
             |> plotErrors
 
             true
@@ -41,8 +41,6 @@ let main argv =
         printf "Missing arguments. %s" defaultMessage
         1
     | 2 ->
-        // Controls the number of samples
-        let power = 6
         if trySimulate argv.[0] argv.[1] then
             printfn "Simulation complete."
             0

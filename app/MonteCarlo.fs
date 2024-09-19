@@ -17,9 +17,9 @@ module MonteCarlo =
      ///<summary>Writes a summary of the simulation to the console.</summary>
      ///<param name="mc">Simulation result.</param>
      ///<returns>Unmodified simulation result.</returns>
-     let print mc = 
-          printfn "sqrt(%f): ref=%f est=%f e_n=%f for %d samples" mc.baseValue mc.referenceValue mc.estimate mc.error mc.samples
-          mc
+     let private print algo result = 
+          printfn "%s for (%f): ref=%f est=%f e_n=%f for %d samples" algo result.baseValue result.referenceValue result.estimate result.error result.samples
+          result
 
      //For more information see the [documentation](./docs/mc_sqrt.pdf)
      module Sqrt =
@@ -75,3 +75,6 @@ module MonteCarlo =
                     estimate = estimate
                     error = e_n
                }
+
+          let print result = 
+               print "sqrt" result
