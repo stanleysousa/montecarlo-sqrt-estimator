@@ -9,7 +9,7 @@ For more information see the [documentation](./docs/mc_sqrt.pdf).
 # Example
 
 ```
-PS ...\app> dotnet run 3.8 6
+PS ...\app> dotnet run 3.8 8
 sqrt for (3.800000): ref=1.949359 est=1.000000 e_n=0.487011 for 1 samples
 sqrt for (3.800000): ref=1.949359 est=1.666667 e_n=0.145018 for 10 samples
 sqrt for (3.800000): ref=1.949359 est=1.818182 e_n=0.067292 for 100 samples
