@@ -4,7 +4,7 @@ Estimates the square root of the number `v` using the Monte Carlo method with 10
 For more information see the [documentation](./docs/mc_sqrt.pdf).
 
 ## How to use
-- You need [.NET6.0](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) runtime
+- You need [.NET6.0](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) sdk
 - On a terminal go to the [\app](/app) folder and execute "dotnet run \<`v`:float\> \<`p`:int\>"
 # Example
 
