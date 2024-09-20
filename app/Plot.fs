@@ -3,8 +3,8 @@ namespace Plot
 module Line =
     open XPlot.GoogleCharts
 
-    let plot data title =
-        let xy: (int * float) list = data
+    let plot title data  =
+        let xy: (int * float) seq = data
 
         let options =
             Options

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Google Chart</title>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load('current', {
+              packages: ["corechart"]
+            });
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart() {
+                if ("")
+                    google.visualization.mapsApiKey = ""
+
+                var data = new google.visualization.DataTable({"cols": [{"type": "number" ,"id": "Column 1" ,"label": "Column 1" }, {"type": "number" ,"id": "Column 2" ,"label": "Column 2" }], "rows" : [{"c" : [{"v": 1}, {"v": 0.4870108239574229}]}, {"c" : [{"v": 10}, {"v": 0.14501803992903828}]}, {"c" : [{"v": 100}, {"v": 0.06729240719531443}]}, {"c" : [{"v": 1000}, {"v": 0.03843962761655279}]}, {"c" : [{"v": 10000}, {"v": 0.004482428123315165}]}, {"c" : [{"v": 100000}, {"v": 0.004069554407972012}]}, {"c" : [{"v": 1000000}, {"v": 0.00040402362519966454}]}, {"c" : [{"v": 10000000}, {"v": 0.0003335998526127089}]}, {"c" : [{"v": 100000000}, {"v": 3.389278497568886E-05}]}]});
+
+                
+
+                var options = {"hAxis":{"format":"scientific","logScale":true,"title":"n"},"height":400,"legend":{"position":"none"},"title":"Relative error for v=3.800000 and n samples","vAxis":{"format":"scientific","logScale":true,"title":"e_n"},"width":600} 
+
+                var chart = new google.visualization.LineChart(document.getElementById('d95ec706-0332-41e1-aef9-bd1b7618cbf3'));
+                chart.draw(data, options);
+            }
+        </script>
+    </head>
+    <body>
+        <div id="d95ec706-0332-41e1-aef9-bd1b7618cbf3" style="width: -1px; height: -1px;"></div>
+    </body>
+</html>

@@ -1,80 +1,90 @@
 namespace MCSqrtEstimator
 
-open System
 open MathHelpers
-
-type MonteCarlo =
-     {
-          baseValue : float
-          referenceValue: float
-          samples : int
-          estimate : float
-          error : float
-     }
 
 module MonteCarlo =
 
+     type SimulationResult =
+          {
+               inputValue : float
+               referenceValue: float
+               estimatedValue : float
+               samples : int
+               relativeError : float
+          }
+
+     ///<summary>Calculates the relative error of the estimated value.</summary>
+     ///<param name="est">Estimated value.</param>
+     ///<param name="est">Reference value.</param>
+     ///<returns>Relative error.</returns>
+     let relativeError est ref =
+          abs (est-ref) / ref
+
      ///<summary>Writes a summary of the simulation to the console.</summary>
-     ///<param name="mc">Simulation result.</param>
+     ///<param name="result">Simulation result.</param>
      ///<returns>Unmodified simulation result.</returns>
-     let private print algo result = 
-          printfn "%s for (%f): ref=%f est=%f e_n=%f for %d samples" algo result.baseValue result.referenceValue result.estimate result.error result.samples
+     let private print model result = 
+          printfn "%s for (%f): ref=%f est=%f e_n=%f for %d samples" model result.inputValue result.referenceValue result.estimatedValue result.relativeError result.samples
           result
 
      //For more information see the [documentation](./docs/mc_sqrt.pdf)
      module Sqrt =
 
+          [<Literal>]
+          let modelName = "sqrt"
+
+          type Location = 
+               | Out = 0
+               | In = 1
+
           ///<summary>The indicator function based on the y random variable.</summary>
           ///<param name="v">The value for which the square root will be estimated.</param>
           ///<param name="y_i">The value of the i_th random variable.</param>
-          ///<returns>True if y is inside the rectangle.</returns>
+          ///<returns>Location of the point considering the rectangle of interest.</returns>
           let private indicator v y_i= 
-               let g_xi_yi =
-                    v * square y_i
-               if g_xi_yi <= 1.0 then
-                    1.0
+               if v * square y_i <= 1.0 then
+                    Location.In |> int
                else 
-                    0.0
+                    Location.Out |> int
 
           ///<summary>Estimates the square root of 'v' using the Monte Carlo method.</summary>
           ///<param name="v">The value for which the square root will be estimated.</param>
           ///<param name="n">Number of samples.</param>
-          ///<returns>Expected value for sqrt(v).</returns>
+          ///<returns>Estimated value for sqrt(v).</returns>
           let estimate v n =
                // Y -> iid sequence continuous in [0,1]
-               let y = generateSamples n
-
-               // SUM_1_n[g(Yi)]
+               let y = createContinuousUniformSamples n 0 1
+               // SUM{1_n}[g(Yi)]
                let sumG =
                     y
-                    |> Seq.map(fun y_i -> indicator v y_i)
+                    |> Seq.map (indicator v)
                     |> Seq.sum
-
-               // E[g(Yi)] = 1 / sqrt (v)
-               let m =
+                    |>  float
+               // Mn = 1/n * sumG
+               let mn =
                     n
                     |> float
                     |> invert
-                    |> (fun a -> a*sumG)
-
-               // Returns the estimated value for sqrt(v)
-               m |> invert
+                    |> Operators.(*) sumG
+               // Mn = 1 / sqrt (v)
+               mn |> invert
 
           ///<summary>Runs the Monte Carlo simulation to estimate the square root of 'v'.</summary>
           ///<param name="v">The value for which the square root will be estimated.</param>
           ///<param name="n">Number of samples.</param>
           ///<returns>Simulation result for sqrt(v).</returns>
           let simulate v n =
+               let reference = sqrt v
                let estimate = estimate v n
-               let reference = Math.Sqrt(v)
-               let e_n = Math.Abs(estimate-reference)/reference
+               let error = relativeError estimate reference
+               
                {
-                    baseValue = v
+                    inputValue = v
                     referenceValue = reference
+                    estimatedValue = estimate
                     samples = n
-                    estimate = estimate
-                    error = e_n
+                    relativeError = error
                }
 
           let print result = 
-               print "sqrt" result
+               print modelName result

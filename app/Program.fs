@@ -6,26 +6,25 @@ open Plot
 let defaultMessage = 
     "Please provide 'v:float  >= 1' (a value for the square root to be estimated) and 'p:int' (the order of magnitude for the max number of samples)."
 
-let plotErrors s = 
-    let errors =
-        s
-        |> List.map (fun e -> e.samples, e.error)
-    let v = s.Head.baseValue
-    let title = sprintf "Relative error for v=%f and n samples" v
-    Line.plot errors title
+let plotErrors (results : MonteCarlo.SimulationResult seq) = 
+    let v = results |> Seq.head
+    let title = sprintf "Relative error for v=%f and n samples" v.inputValue
+    let data =
+        results
+        |> Seq.map (fun e -> e.samples, e.relativeError)
+    Line.plot title data
 
 let trySimulate value power =
     try 
         let v = value |> float
         let p = power |> int
-
         if v >= 1.0 then
-            List.init p (fun i -> [0..(pown 10 (i))..(pown 10 (i+1))]) // Create lists with an increasing number of samples
-            |> List.collect (fun l -> (l |> List.skip 2)) // Flattens the list skipping the first two items
-            |> List.map (fun n -> MonteCarlo.Sqrt.simulate v n) // Runs the simulations
-            |> List.map (fun s -> MonteCarlo.Sqrt.print s) // Print results
+            [|
+                for i in 0..p -> pown 10 i
+            |]
+            |> Array.map (fun n -> MonteCarlo.Sqrt.simulate v n)
+            |> Array.map (fun s -> MonteCarlo.Sqrt.print s)
             |> plotErrors
-
             true
         else
             false
