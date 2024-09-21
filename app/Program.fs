@@ -22,7 +22,7 @@ let trySimulate value power =
             [|
                 for i in 0..p -> pown 10 i
             |]
-            |> Array.map (fun n -> MonteCarlo.Sqrt.simulate v n)
+            |> Array.Parallel.map (fun n -> MonteCarlo.Sqrt.simulate v n)
             |> Array.map (fun s -> MonteCarlo.Sqrt.print s)
             |> plotErrors
             true
