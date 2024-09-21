@@ -4,8 +4,9 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="MathHelpers.fs" />
-    <Compile Include="MonteCarlo.fs" />
+    <Compile Include="MonteCarlo/MathHelpers.fs" />
+    <Compile Include="MonteCarlo/Simulation.fs" />
+    <Compile Include="MonteCarlo/McSqrt.fs" />
     <Compile Include="Plot.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

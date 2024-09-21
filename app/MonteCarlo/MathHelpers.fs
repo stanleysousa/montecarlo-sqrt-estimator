@@ -1,8 +1,8 @@
-namespace MCSqrtEstimator
-
-open MathNet.Numerics
+namespace MCSqrtEstimator.MonteCarlo
 
 module MathHelpers =
+
+    open MathNet.Numerics
 
     ///<summary>Calculates the square of a number.</summary>
     ///<param name="x">Number to be squared.</param>

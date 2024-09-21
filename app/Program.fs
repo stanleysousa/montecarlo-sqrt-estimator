@@ -1,42 +1,49 @@
 ﻿namespace MCSqrtEstimator
 
-open System
-open MCSqrtEstimator.MonteCarlo
-open Plot
-
 module Program =
 
-    let plotErrors results = 
+    open System
+    open Plot
+    open MMCSqrtEstimator.MonteCarlo
+
+    let plotRelativeErrors (results : MonteCarlo.Simulation.Output array) = 
         if results |> Seq.length > 0 then
-            let v = (results |> Seq.head).runParameters.value
+            let v = (results |> Seq.head) .runParameters.value
             let title = sprintf "Relative error for v=%f and n samples" v
             let data =
                 results
                 |> Seq.map (fun o -> o.runParameters.samples, o.relativeError)
             Line.plot title data
 
-    let runSqrtSimulations v p =
-        Sqrt.runSimulations v p
-        |> Array.choose (function
-            | Success output ->
-                MonteCarlo.Sqrt.print output
+    let handleSqrtResult  =
+        function
+            | MonteCarlo.Simulation.Result.Success output ->
+                McSqrt.print output
                 Some output
-            | Failure errorMessage ->
+            | MonteCarlo.Simulation.Result.Failure errorMessage ->
                 printfn "Simulation failed. Reason: %s" errorMessage
-                None)
-        |> plotErrors
+                None
+                
+    let runSqrtSimulations v p =
+        McSqrt.runSimulations v p
+        |> Array.choose handleSqrtResult
+        |> plotRelativeErrors
         printfn "Simulation complete."
+
+    let fail message =
+            let fgColor = Console.ForegroundColor
+            Console.ForegroundColor <- ConsoleColor.Red
+            printfn message
+            Console.ForegroundColor <- fgColor
+            1 // Exit code
 
     [<EntryPoint>]
     let main argv =
         let fgColor = Console.ForegroundColor
         match argv.Length with
         | 0
-        | 1 -> 
-            Console.ForegroundColor <- ConsoleColor.Red
-            printf "Missing arguments.\n%s" Sqrt.inputMessage
-            Console.ForegroundColor <- fgColor
-            1
+        | 1 ->
+            fail $"Missing arguments.\n{McSqrt.inputMessage}" 
         | 2 ->
             try 
                 let v = argv.[0] |> float
@@ -45,14 +52,9 @@ module Program =
                     runSqrtSimulations v p
                     0
                 else
-                    printf "%s\n%s" "Invalid argument(s)." Sqrt.inputMessage
-                    1
+                    fail $"Invalid argument 'v={argv.[0]}'.\n{McSqrt.inputMessage}" 
             with
                 | :? FormatException as e ->
-                    printf "%s\n%s" e.Message Sqrt.inputMessage
-                    1
+                    fail $"{e.Message}\n{McSqrt.inputMessage}" 
         | _ ->
-            Console.ForegroundColor <- ConsoleColor.Red
-            printfn "Too many arguments.\n%s" Sqrt.inputMessage
-            Console.ForegroundColor <- fgColor
-            1
+            fail $"Too many arguments.\n{McSqrt.inputMessage}" 
