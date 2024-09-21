@@ -9,17 +9,16 @@ For more information see the [documentation](./docs/mc_sqrt.pdf).
 # Example
 
 ```
-PS ...\app> dotnet run 3.8 8
-sqrt for (3.800000): ref=1.949359 est=1.000000 e_n=0.487011 for 1 samples
-sqrt for (3.800000): ref=1.949359 est=1.666667 e_n=0.145018 for 10 samples
-sqrt for (3.800000): ref=1.949359 est=1.818182 e_n=0.067292 for 100 samples
-sqrt for (3.800000): ref=1.949359 est=2.024291 e_n=0.038440 for 1000 samples
-sqrt for (3.800000): ref=1.949359 est=1.958097 e_n=0.004482 for 10000 samples
-sqrt for (3.800000): ref=1.949359 est=1.957292 e_n=0.004070 for 100000 samples
-sqrt for (3.800000): ref=1.949359 est=1.950146 e_n=0.000404 for 1000000 samples
-sqrt for (3.800000): ref=1.949359 est=1.950009 e_n=0.000334 for 10000000 samples
-sqrt for (3.800000): ref=1.949359 est=1.949425 e_n=0.000034 for 100000000 samples
+PS ...\app> dotnet run 3.5 8
+sqrt for (3.500000): expected=1.870829 estimated=5.000000 e_n=1.672612 for 10 samples
+sqrt for (3.500000): expected=1.870829 estimated=1.960784 e_n=0.048083 for 100 samples
+sqrt for (3.500000): expected=1.870829 estimated=1.845018 e_n=0.013796 for 1000 samples
+sqrt for (3.500000): expected=1.870829 estimated=1.875117 e_n=0.002292 for 10000 samples
+sqrt for (3.500000): expected=1.870829 estimated=1.881361 e_n=0.005630 for 100000 samples
+sqrt for (3.500000): expected=1.870829 estimated=1.867421 e_n=0.001822 for 1000000 samples
+sqrt for (3.500000): expected=1.870829 estimated=1.870303 e_n=0.000281 for 10000000 samples
+sqrt for (3.500000): expected=1.870829 estimated=1.871043 e_n=0.000115 for 100000000 samples
 Simulation complete.
 PS ...\app>
 ```
-![Relative error for v=3.8](/docs/error-3_8_8.JPG)
+![Relative error for v=3.5](/docs/error-3_5_8.JPG)
