@@ -15,19 +15,17 @@ module Program =
                 |> Seq.map (fun o -> o.runParameters.samples, o.relativeError)
             Line.plot title data
 
-    let tryRunSimulations value power =
-         try 
-              let v = value |> float
-              let p = power |> int
-              if v >= 1.0 then
-                   Sqrt.runSimulations v p
-              else
-                   printf "%s\n%s" "Invalid argument(s)." Sqrt.inputMessage
-                   Array.empty
-         with
-              | :? FormatException as e ->
-                   printf "%s\n%s" e.Message Sqrt.inputMessage
-                   Array.empty
+    let runSqrtSimulations v p =
+        Sqrt.runSimulations v p
+        |> Array.choose (function
+            | Success output ->
+                MonteCarlo.Sqrt.print output
+                Some output
+            | Failure errorMessage ->
+                printfn "Simulation failed. Reason: %s" errorMessage
+                None)
+        |> plotErrors
+        printfn "Simulation complete."
 
     [<EntryPoint>]
     let main argv =
@@ -39,18 +37,20 @@ module Program =
             printf "Missing arguments.\n%s" Sqrt.inputMessage
             Console.ForegroundColor <- fgColor
             1
-        | 2 ->                   
-            tryRunSimulations argv.[0] argv.[1]
-                |> Array.choose (function
-                    | Success output ->
-                        MonteCarlo.Sqrt.print output
-                        Some output
-                    | Failure errorMessage ->
-                        printfn "Simulation failed. Reason: %s" errorMessage
-                        None)
-                |> plotErrors
-            printfn "Simulation complete."
-            0
+        | 2 ->
+            try 
+                let v = argv.[0] |> float
+                let p = argv.[1] |> int
+                if v >= 1.0 then
+                    runSqrtSimulations v p
+                    0
+                else
+                    printf "%s\n%s" "Invalid argument(s)." Sqrt.inputMessage
+                    1
+            with
+                | :? FormatException as e ->
+                    printf "%s\n%s" e.Message Sqrt.inputMessage
+                    1
         | _ ->
             Console.ForegroundColor <- ConsoleColor.Red
             printfn "Too many arguments.\n%s" Sqrt.inputMessage
