@@ -32,7 +32,7 @@ module McSqrt =
      ///<param name="v">The value for which the square root will be estimated.</param>
      ///<param name="n">Number of samples.</param>
      ///<returns>Estimated value for sqrt(v).</returns>
-     let private estimate v n =
+     let estimate v n =
           // Y -> iid sequence continuous in [0,1]
           let y = createContinuousUniformSamples n 0 1
           // SUM{1_n}[g(Yi)]
@@ -56,5 +56,6 @@ module McSqrt =
      ///<returns>Simulation results for sqrt(v).</returns>
      let runSimulations v p =
           runManySimulations estimate v p
+
      let print output = 
           print modelName output

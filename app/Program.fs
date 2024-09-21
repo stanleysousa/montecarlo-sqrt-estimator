@@ -39,7 +39,6 @@ module Program =
 
     [<EntryPoint>]
     let main argv =
-        let fgColor = Console.ForegroundColor
         match argv.Length with
         | 0
         | 1 ->
