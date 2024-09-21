@@ -8,11 +8,11 @@ module Program =
 
     let plotErrors (results : MonteCarlo.SimulationOutput seq) = 
         if results |> Seq.length > 0 then
-            let v = results |> Seq.head
-            let title = sprintf "Relative error for v=%f and n samples" v.inputValue
+            let v = (results |> Seq.head).runParameters.value
+            let title = sprintf "Relative error for v=%f and n samples" v
             let data =
                 results
-                |> Seq.map (fun e -> e.samples, e.relativeError)
+                |> Seq.map (fun o -> o.runParameters.samples, o.relativeError)
             Line.plot title data
 
     [<EntryPoint>]

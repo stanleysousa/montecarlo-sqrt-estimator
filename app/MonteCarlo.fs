@@ -10,13 +10,12 @@ module MonteCarlo =
                estimationFunc : float -> int -> float
                value : float
                samples : int
+               expectedValue: float
           }
 
      type SimulationOutput =
           {
-               inputValue : float
-               samples : int
-               referenceValue: float
+               runParameters : SimulationInput
                estimatedValue : float
                relativeError : float
           }
@@ -42,9 +41,7 @@ module MonteCarlo =
                let error = relativeError estimate reference
                let result =
                     {
-                         inputValue = input.value
-                         samples = input.samples
-                         referenceValue = reference
+                         runParameters = input
                          estimatedValue = estimate
                          relativeError = error
                     }
@@ -69,13 +66,14 @@ module MonteCarlo =
                          estimationFunc = estimationFunc
                          value = v
                          samples = n
+                         expectedValue = sqrt v
                     }
                tryRunSimulation input)     
 
      ///<summary>Writes a summary of the simulation output to the console.</summary>
      ///<param name="output">Simulation output.</param>
      let print model output = 
-          printfn "%s for (%f): ref=%f est=%f e_n=%f for %d samples" model output.inputValue output.referenceValue output.estimatedValue output.relativeError output.samples
+          printfn "%s for (%f): expected=%f estimated=%f e_n=%f for %d samples" model output.runParameters.value output.runParameters.expectedValue output.estimatedValue output.relativeError output.runParameters.samples
 
      //For more information see the [documentation](./docs/mc_sqrt.pdf)
      module Sqrt =
