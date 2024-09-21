@@ -6,7 +6,7 @@ open Plot
 
 module Program =
 
-    let plotErrors (results : MonteCarlo.SimulationOutput seq) = 
+    let plotErrors results = 
         if results |> Seq.length > 0 then
             let v = (results |> Seq.head).runParameters.value
             let title = sprintf "Relative error for v=%f and n samples" v
@@ -14,6 +14,20 @@ module Program =
                 results
                 |> Seq.map (fun o -> o.runParameters.samples, o.relativeError)
             Line.plot title data
+
+    let tryRunSimulations value power =
+         try 
+              let v = value |> float
+              let p = power |> int
+              if v >= 1.0 then
+                   Sqrt.runSimulations v p
+              else
+                   printf "%s\n%s" "Invalid argument(s)." Sqrt.inputMessage
+                   Array.empty
+         with
+              | :? FormatException as e ->
+                   printf "%s\n%s" e.Message Sqrt.inputMessage
+                   Array.empty
 
     [<EntryPoint>]
     let main argv =
@@ -26,7 +40,7 @@ module Program =
             Console.ForegroundColor <- fgColor
             1
         | 2 ->                   
-            Sqrt.tryRunSimulations argv.[0] argv.[1]
+            tryRunSimulations argv.[0] argv.[1]
                 |> Array.choose (function
                     | Success output ->
                         MonteCarlo.Sqrt.print output

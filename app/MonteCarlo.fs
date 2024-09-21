@@ -47,7 +47,7 @@ module MonteCarlo =
                     }
                Success result
           with
-               | :? ArgumentException as e->
+               | _ as e->
                     let message = sprintf "%s\n%s" e.Message e.StackTrace
                     Failure message
 
@@ -126,18 +126,8 @@ module MonteCarlo =
           ///<param name="v">The value for which the square root will be estimated.</param>
           ///<param name="p">Order of magniture for the maximum number of samples.</param>
           ///<returns>Simulation results for sqrt(v).</returns>
-          let tryRunSimulations (value : string) (power : string) =
-               try 
-                    let v = value |> float
-                    let p = power |> int
-                    if v >= 1.0 then
-                         runManySimulations estimate v p
-                    else
-                         [| Failure inputMessage |]
-               with
-                    | :? FormatException as e ->
-                         let message = sprintf "%s\n%s" e.Message inputMessage
-                         [| Failure message |]
+          let runSimulations v p =
+               runManySimulations estimate v p
                          
           let print output = 
                print modelName output
