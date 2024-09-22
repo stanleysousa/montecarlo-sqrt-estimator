@@ -6,8 +6,11 @@ module McSqrt =
      open MCSqrtEstimator.MonteCarlo.MathHelpers
 
      [<Literal>]
-     let inputMessage =  "Please provide 'v>=1.0 :float' and 'p :int' \n  v = a value for the square root to be estimated \n  p = the order of magnitude for the max number of samples"
-  
+     let ModelName =  "sqrt"
+
+     [<Literal>]
+     let InputMessage =  "Please provide 'v>=1.0 :float' and 'p :int' \n  v = a value for the square root to be estimated \n  p = the order of magnitude for the max number of samples"
+
      // Active pattern for the indicator function for learning reasons
      // Could be an Enum
      let private (|In|Out|) (v, y_i) =
@@ -46,3 +49,6 @@ module McSqrt =
                |> Operators.(*) sumG
           // Mn = 1 / sqrt (v)
           mn |> invert
+
+     ///<summary>Calculates the expected value for square root of 'v'.</summary>
+     let expectedValueFunc = sqrt

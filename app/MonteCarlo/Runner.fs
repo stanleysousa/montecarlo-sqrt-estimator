@@ -33,9 +33,8 @@ module Runner =
      ///<returns>Simulation output.</returns>
      let private tryRunSimulation input =
           try 
-               let reference = sqrt input.Value
                let estimate = input.EstimatorFunc input.Value input.Samples
-               let error = calculateRelativeError estimate reference
+               let error = calculateRelativeError estimate input.ExpectedValue
                let result =
                     {
                          RunParameters = input
@@ -49,31 +48,34 @@ module Runner =
                     Failure message
 
      ///<summary>Runs Monte Carlo simulation for a given model implementation.</summary>
-     ///<param name="estimationFunc">Function that implements the model to be simulated.</param>
      ///<param name="v">The value for which estimation will be calculated.</param>
      ///<param name="n">Number of samples.</param>
+     ///<param name="estimationFunc">Function that implements the model to be simulated.</param>
+     ///<param name="expectedValueFunc">Function which calculates the expected value for the model.</param>
      ///<returns>Simulations outputs.</returns>
-     let runSingleSimulation estimationFunc v n =
+     let runSingleSimulation v n estimationFunc expectedValueFunc =
+          let expectedValue = expectedValueFunc v
           let input =
                {
                     EstimatorFunc = estimationFunc
                     Value = v
                     Samples = n
-                    ExpectedValue = sqrt v
+                    ExpectedValue = expectedValue
                }
           tryRunSimulation input
 
      ///<summary>Runs several parallel Monte Carlo simulations, with different number of samples, for a given model implementation.</summary>
-     ///<param name="estimatorFunc">Function that implements the model to be simulated.</param>
      ///<param name="v">The value for which estimation will be calculated.</param>
      ///<param name="p">Order of magnitude for the maximum number of samples.</param>
+     ///<param name="estimatorFunc">Function that implements the model to be simulated.</param>
+     ///<param name="expectedValueFunc">Function which calculates the expected value for the model.</param>
      ///<returns>Simulations outputs.</returns>
-     let runManySimulations estimatorFunc v p =
+     let runManySimulations v p estimatorFunc expectedValueFunc =
           [|
                for i in 1..p -> pown 10 i
           |]
           |> Array.Parallel.map (fun n ->
-               runSingleSimulation estimatorFunc v n)
+               runSingleSimulation v n estimatorFunc expectedValueFunc)
 
      ///<summary>Handles the simulation result.</summary>
      ///<param name="successFunc">Function to be executed for successfull simulations.</param>

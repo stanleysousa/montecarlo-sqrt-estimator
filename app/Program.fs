@@ -3,18 +3,25 @@
 module Program =
 
     open System
-    open Presentation.View
     open MCSqrtEstimator.MonteCarlo
+    open MCSqrtEstimator.MonteCarlo.Models
+    open MCSqrtEstimator.Presentation.View
 
-    let inputValidationMessage = Models.McSqrt.inputMessage
+    // Model parameters
+    let inputValidationMessage = McSqrt.InputMessage
 
-    let successFunc output = writeSummary "sqrt" output
+    let estimatorFunc = McSqrt.estimate
+
+    let expectedValueFunc = McSqrt.expectedValueFunc
+
+    // Results handler functions
+    let successFunc (output: Runner.Output) = writeSummary McSqrt.ModelName output
 
     let failureFunc errorMessage = printfn "Simulation failed. Reason: %s" errorMessage
-               
+
+    // Program auxiliary functions
     let execute v p =
-        let simulation = MonteCarlo.Simulation(Models.McSqrt.estimate, v)
-        simulation.RunMany p
+        Runner.runManySimulations v p estimatorFunc expectedValueFunc
         |> Array.choose (Runner.handleResult successFunc failureFunc)
         |> plotRelativeErrors
         printfn "Simulation complete."
@@ -27,6 +34,7 @@ module Program =
         Console.ForegroundColor <- fgColor
         1 // Exit code
 
+    // Program EntyPoint
     [<EntryPoint>]
     let main argv =
         match argv.Length with

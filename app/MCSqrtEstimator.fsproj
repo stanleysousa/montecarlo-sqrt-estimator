@@ -6,7 +6,6 @@
   <ItemGroup>
     <Compile Include="MonteCarlo/MathHelpers.fs" />
     <Compile Include="MonteCarlo/Runner.fs" />
-    <Compile Include="MonteCarlo/Simulation.fs" />
     <Compile Include="MonteCarlo/Models/McSqrt.fs" />
     <Compile Include="Presentation/Plot.fs" />
     <Compile Include="Presentation/View.fs" />
