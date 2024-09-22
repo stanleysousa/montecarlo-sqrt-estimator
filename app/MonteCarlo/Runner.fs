@@ -88,7 +88,7 @@ module Runner =
      ///<returns>Some output if the simulation was successful, None otherwise.</returns>
      let handleResult successFunc failureFunc =
           function
-               | Success (output: Output) ->
+               | Success output ->
                     successFunc output
                     Some output
                | Failure errorMessage ->

@@ -18,13 +18,14 @@ module Program =
         |> Array.choose (Runner.handleResult successFunc failureFunc)
         |> plotRelativeErrors
         printfn "Simulation complete."
+        0 // Exit code
 
     let fail message =
-            let fgColor = Console.ForegroundColor
-            Console.ForegroundColor <- ConsoleColor.Red
-            printfn message
-            Console.ForegroundColor <- fgColor
-            1 // Exit code
+        let fgColor = Console.ForegroundColor
+        Console.ForegroundColor <- ConsoleColor.Red
+        printfn message
+        Console.ForegroundColor <- fgColor
+        1 // Exit code
 
     [<EntryPoint>]
     let main argv =
@@ -38,7 +39,6 @@ module Program =
                 let p = argv.[1] |> int
                 if v >= 1.0 then
                     execute v p
-                    0
                 else
                     fail $"Invalid argument 'v={argv.[0]}'.\n{inputValidationMessage}" 
             with
