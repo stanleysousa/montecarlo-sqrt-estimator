@@ -1,18 +1,15 @@
-namespace MMCSqrtEstimator.MonteCarlo
+namespace MCSqrtEstimator.MonteCarlo.Models
 
 //For more information see the [documentation](./docs/mc_sqrt.pdf)
 module McSqrt =
 
      open MCSqrtEstimator.MonteCarlo.MathHelpers
-     open MCSqrtEstimator.MonteCarlo.Simulation
-
-     [<Literal>]
-     let modelName = "sqrt"
 
      [<Literal>]
      let inputMessage =  "Please provide 'v>=1.0 :float' and 'p :int' \n  v = a value for the square root to be estimated \n  p = the order of magnitude for the max number of samples"
   
-     // Active pattern for the indicator function
+     // Active pattern for the indicator function for learning reasons
+     // Could be an Enum
      let private (|In|Out|) (v, y_i) =
           if v * square y_i <= 1.0 then
                In 
@@ -49,13 +46,3 @@ module McSqrt =
                |> Operators.(*) sumG
           // Mn = 1 / sqrt (v)
           mn |> invert
-  
-     ///<summary>Runs several Monte Carlo simulations, with different number of samples, to estimate the square root of 'v'.</summary>
-     ///<param name="v">The value for which the square root will be estimated.</param>
-     ///<param name="p">Order of magniture for the maximum number of samples.</param>
-     ///<returns>Simulation results for sqrt(v).</returns>
-     let runSimulations v p =
-          runManySimulations estimate v p
-
-     let print output = 
-          print modelName output

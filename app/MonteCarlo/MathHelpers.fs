@@ -13,6 +13,7 @@ module MathHelpers =
     ///<summary>Inverts a number.</summary>
     ///<param name="x">Number to be inverted.</param>
     ///<returns>x to the power of -1.</returns>
+    ///<exception cref="System.ArgumentException">Thrown when x is zero.</exception>
     let invert x =
         // There is a chance for x to be zero when the number of samples is small
         if x = 0. then
