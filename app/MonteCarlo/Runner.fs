@@ -63,7 +63,7 @@ module Runner =
                }
           tryRunSimulation input
 
-     ///<summary>Runs several Monte Carlo simulations, with different number of samples, for a given model implementation.</summary>
+     ///<summary>Runs several parallel Monte Carlo simulations, with different number of samples, for a given model implementation.</summary>
      ///<param name="estimatorFunc">Function that implements the model to be simulated.</param>
      ///<param name="v">The value for which estimation will be calculated.</param>
      ///<param name="p">Order of magnitude for the maximum number of samples.</param>
@@ -72,15 +72,8 @@ module Runner =
           [|
                for i in 1..p -> pown 10 i
           |]
-          |> Array.Parallel.map (fun n -> 
-               let input =
-                    {
-                         EstimatorFunc = estimatorFunc
-                         Value = v
-                         Samples = n
-                         ExpectedValue = sqrt v
-                    }
-               tryRunSimulation input)
+          |> Array.Parallel.map (fun n ->
+               runSingleSimulation estimatorFunc v n)
 
      ///<summary>Handles the simulation result.</summary>
      ///<param name="successFunc">Function to be executed for successfull simulations.</param>
