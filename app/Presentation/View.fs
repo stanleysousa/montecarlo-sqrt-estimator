@@ -3,9 +3,9 @@ namespace MCSqrtEstimator.Presentation
 module View =
 
     open Plot
-    open MCSqrtEstimator.MonteCarlo.Runner
+    open MCSqrtEstimator.Core.Simulation.Types
 
-    let writeSummary model (output : Output) = 
+    let writeSummary model output= 
         printfn "%s for (%f): expected=%f estimated=%f e_n=%f for %d samples" model output.RunParameters.Value output.RunParameters.ExpectedValue output.EstimatedValue output.RelativeError output.RunParameters.Samples
     
     let plotRelativeErrors (results : Output array) = 

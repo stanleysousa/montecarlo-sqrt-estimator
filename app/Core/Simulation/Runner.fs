@@ -1,68 +1,55 @@
-namespace MCSqrtEstimator.MonteCarlo
+namespace MCSqrtEstimator.Core.Simulation
 
 module Runner =
 
-     type Input =
-          {
-               EstimatorFunc : float -> int -> float
-               Value : float
-               Samples : int
-               ExpectedValue: float
-          }
-
-     type Output =
-          {
-               RunParameters : Input
-               EstimatedValue : float
-               RelativeError : float
-          }
-
-     type Result<'TSuccess,'TFailure> =
-     | Success of Output
-     | Failure of string
+     open MCSqrtEstimator.Core
+     open MCSqrtEstimator.Core.Simulation.Types
 
      ///<summary>Calculates the relative error of the estimated value.</summary>
      ///<param name="est">Estimated value.</param>
      ///<param name="est">Reference value.</param>
      ///<returns>Relative error.</returns>
      let private calculateRelativeError est ref =
-          abs (est-ref) / ref
+          if ref = 0. then
+               abs (est-ref)
+          else
+               abs (est-ref) / ref
 
      ///<summary>Runs the Monte Carlo simulation for a given model implementation.</summary>
      ///<param name="input">Simulation input containing the estimation function, value and number of samples.</param>
      ///<returns>Simulation output.</returns>
-     let private tryRunSimulation input =
-          try 
-               let estimate = input.EstimatorFunc input.Value input.Samples
-               let error = calculateRelativeError estimate input.ExpectedValue
+     let private run input =
+          let estimate = input.EstimatorFunc input.Value input.Samples
+          match estimate with
+          | MonteCarlo.Types.Success est ->
+               let error = calculateRelativeError est input.ExpectedValue
                let result =
                     {
                          RunParameters = input
-                         EstimatedValue = estimate
+                         EstimatedValue = est
                          RelativeError = error
                     }
                Success result
-          with
-               | _ as e->
-                    let message = sprintf "%s\n%s" e.Message e.StackTrace
-                    Failure message
+          | MonteCarlo.Types.Failure reason ->
+               Failure reason
+
 
      ///<summary>Runs Monte Carlo simulation for a given model implementation.</summary>
      ///<param name="v">The value for which estimation will be calculated.</param>
      ///<param name="n">Number of samples.</param>
-     ///<param name="estimationFunc">Function that implements the model to be simulated.</param>
+     ///<param name="estimatorFunc">Function that implements the model to be simulated.</param>
      ///<param name="expectedValueFunc">Function which calculates the expected value for the model.</param>
      ///<returns>Simulations outputs.</returns>
-     let runSingleSimulation v n estimationFunc expectedValueFunc =
+     let runSingleSimulation v n estimatorFunc expectedValueFunc =
           let expectedValue = expectedValueFunc v
           let input =
                {
-                    EstimatorFunc = estimationFunc
+                    EstimatorFunc = estimatorFunc
                     Value = v
                     Samples = n
                     ExpectedValue = expectedValue
                }
-          tryRunSimulation input
+          run input
 
      ///<summary>Runs several parallel Monte Carlo simulations, with different number of samples, for a given model implementation.</summary>
      ///<param name="v">The value for which estimation will be calculated.</param>

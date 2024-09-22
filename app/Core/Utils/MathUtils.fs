@@ -1,6 +1,6 @@
-namespace MCSqrtEstimator.MonteCarlo
+namespace MCSqrtEstimator.Core.Utils
 
-module MathHelpers =
+module MathUtils =
 
     open MathNet.Numerics
 
@@ -13,13 +13,12 @@ module MathHelpers =
     ///<summary>Inverts a number.</summary>
     ///<param name="x">Number to be inverted.</param>
     ///<returns>x to the power of -1.</returns>
-    ///<exception cref="System.ArgumentException">Thrown when x is zero.</exception>
     let invert x =
-        // There is a chance for x to be zero when the number of samples is small
+        // There is a chance for x to be zero when the number of samples is small, particularly when n<10
         if x = 0. then
-            invalidArg  (sprintf "x=%f" x) "Cannot divide by 0"
+            None
         else
-            1./x  
+            Some (1./x)
     
     ///<summary>Creates samples from a continuous uniform distribution.</summary>
     ///<param name="n">Number of samples.</param>

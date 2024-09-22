@@ -3,8 +3,8 @@
 module Program =
 
     open System
-    open MCSqrtEstimator.MonteCarlo
-    open MCSqrtEstimator.MonteCarlo.Models
+    open MCSqrtEstimator.Core.MonteCarlo.Models
+    open MCSqrtEstimator.Core.Simulation
     open MCSqrtEstimator.Presentation.View
 
     // Model parameters
@@ -15,7 +15,7 @@ module Program =
     let expectedValueFunc = McSqrt.expectedValueFunc
 
     // Results handler functions
-    let successFunc (output: Runner.Output) = writeSummary McSqrt.ModelName output
+    let successFunc output = writeSummary McSqrt.ModelName output
 
     let failureFunc errorMessage = printfn "Simulation failed. Reason: %s" errorMessage
 

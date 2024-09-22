@@ -1,9 +1,10 @@
-namespace MCSqrtEstimator.MonteCarlo.Models
+namespace MCSqrtEstimator.Core.MonteCarlo.Models
 
 //For more information see the [documentation](./docs/mc_sqrt.pdf)
 module McSqrt =
 
-     open MCSqrtEstimator.MonteCarlo.MathHelpers
+     open MCSqrtEstimator.Core.Utils.MathUtils
+     open MCSqrtEstimator.Core.MonteCarlo.Types
 
      [<Literal>]
      let ModelName =  "sqrt"
@@ -33,22 +34,33 @@ module McSqrt =
      ///<param name="n">Number of samples.</param>
      ///<returns>Estimated value for sqrt(v).</returns>
      let estimate v n =
-          // Y -> iid sequence continuous in [0,1]
-          let y = createContinuousUniformSamples n 0 1
-          // SUM{1_n}[g(Yi)]
-          let sumG =
-               y
-               |> Seq.map (indicator v)
-               |> Seq.sum
-               |>  float
-          // Mn = 1/n * sumG
-          let mn =
-               n
-               |> float
-               |> invert
-               |> Operators.(*) sumG
-          // Mn = 1 / sqrt (v)
-          mn |> invert
+          if n = 0 then
+               let message = "The number of samples must not be 0."
+               Failure message
+          else
+               // Y -> iid sequence continuous in [0,1]
+               let y = createContinuousUniformSamples n 0 1
+               // 1/n
+               let oneOverN =
+                    n
+                    |> float
+                    |> invert
+                    |> Option.defaultValue 0. // Only to satisfy the compiler, should never default since 'n' is validated above
+               // SUM{1_n}[g(Yi)]
+               let sumG =
+                    y
+                    |> Seq.map (indicator v)
+                    |> Seq.sum
+                    |>  float
+               // Mn = 1/n * sumG
+               let mn = oneOverN * sumG
+               // sqrt(v) = 1 / Mn
+               let sqrtv = mn |> invert
+               match sqrtv with
+               | Some value ->
+                    Success value
+               | None ->
+                    Failure "The estimator failed to generate non-zero values for the indicator function"
 
      ///<summary>Calculates the expected value for square root of 'v'.</summary>
      let expectedValueFunc = sqrt
