@@ -10,14 +10,22 @@ For more information see the [documentation](./docs/mc_sqrt.pdf).
 
 ```
 PS ...\app> dotnet run 3.5 8
-sqrt for (3.500000): expected=1.870829 estimated=3.333333 e_n=0.781742 for 10 samples
+trace: value = 5.0
+trace: value = 59.0
+trace: value = 542.0
+trace: value = 5316.0
+trace: value = 53317.0
+trace: value = 534910.0
+trace: value = 5342906.0
+trace: value = 53453304.0
+sqrt for (3.500000): expected=1.870829 estimated=2.000000 e_n=0.069045 for 10 samples
 sqrt for (3.500000): expected=1.870829 estimated=1.694915 e_n=0.094030 for 100 samples
-sqrt for (3.500000): expected=1.870829 estimated=1.828154 e_n=0.022811 for 1000 samples
-sqrt for (3.500000): expected=1.870829 estimated=1.892506 e_n=0.011587 for 10000 samples
-sqrt for (3.500000): expected=1.870829 estimated=1.860534 e_n=0.005503 for 100000 samples
-sqrt for (3.500000): expected=1.870829 estimated=1.869386 e_n=0.000771 for 1000000 samples
-sqrt for (3.500000): expected=1.870829 estimated=1.870675 e_n=0.000082 for 10000000 samples
-sqrt for (3.500000): expected=1.870829 estimated=1.870902 e_n=0.000039 for 100000000 samples
+sqrt for (3.500000): expected=1.870829 estimated=1.845018 e_n=0.013796 for 1000 samples
+sqrt for (3.500000): expected=1.870829 estimated=1.881114 e_n=0.005498 for 10000 samples
+sqrt for (3.500000): expected=1.870829 estimated=1.875574 e_n=0.002537 for 100000 samples
+sqrt for (3.500000): expected=1.870829 estimated=1.869473 e_n=0.000724 for 1000000 samples
+sqrt for (3.500000): expected=1.870829 estimated=1.871641 e_n=0.000434 for 10000000 samples
+sqrt for (3.500000): expected=1.870829 estimated=1.870792 e_n=0.000020 for 100000000 samples
 Simulation complete.
 PS ...\app>
 ```
