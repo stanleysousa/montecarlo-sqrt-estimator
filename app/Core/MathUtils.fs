@@ -1,4 +1,4 @@
-namespace MCSqrtEstimator.Core.Utils
+namespace MCSqrtEstimator.Core
 
 module MathUtils =
 

@@ -1,6 +1,4 @@
-namespace MCSqrtEstimator.Core.Simulation.Types
-
-open MCSqrtEstimator.Core.MonteCarlo.Types
+namespace MCSqrtEstimator.Core.Types
 
 type Input =
      {

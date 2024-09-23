@@ -1,10 +1,10 @@
-namespace MCSqrtEstimator.Core.MonteCarlo.Models
+namespace MCSqrtEstimator.Core
 
 //For more information see the [documentation](./docs/mc_sqrt.pdf)
 module McSqrt =
 
-     open MCSqrtEstimator.Core.Utils.MathUtils
-     open MCSqrtEstimator.Core.MonteCarlo.Types
+     open MCSqrtEstimator.Core.MathUtils
+     open MCSqrtEstimator.Core.Types
 
      [<Literal>]
      let ModelName =  "sqrt"
@@ -36,7 +36,7 @@ module McSqrt =
      let estimate v n =
           if n = 0 then
                let message = "The number of samples must not be 0."
-               Failure message
+               EstimateFailure message
           else
                // Y -> iid sequence continuous in [0,1]
                let y = createContinuousUniformSamples n 0 1
@@ -58,9 +58,9 @@ module McSqrt =
                let sqrtv = mn |> invert
                match sqrtv with
                | Some value ->
-                    Success value
+                    EstimateSuccess value
                | None ->
-                    Failure "The estimator failed to generate non-zero values for the indicator function"
+                    EstimateFailure "The estimator failed to generate non-zero values for the indicator function"
 
      ///<summary>Calculates the expected value for square root of 'v'.</summary>
      let expectedValueFunc = sqrt

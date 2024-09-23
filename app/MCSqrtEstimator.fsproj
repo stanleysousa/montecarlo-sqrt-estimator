@@ -4,13 +4,14 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Core/Utils/MathUtils.fs" />
-    <Compile Include="Core/MonteCarlo/Types/Estimate.fs" />
-    <Compile Include="Core/MonteCarlo/Models/McSqrt.fs" />
-    <Compile Include="Core/Simulation/Types/Input.fs" />
-    <Compile Include="Core/Simulation/Types/Output.fs" />
-    <Compile Include="Core/Simulation/Types/Result.fs" />
-    <Compile Include="Core/Simulation/Runner.fs" />
+    <Compile Include="Core/MathUtils.fs" />
+    <Compile Include="Core/Types/Estimate.fs" />
+    <Compile Include="Core/Types/Input.fs" />
+    <Compile Include="Core/Types/Output.fs" />
+    <Compile Include="Core/Types/Result.fs" />
+    <Compile Include="Core/McSqrt.fs" />
+    <Compile Include="Core\McOther.fs" />
+    <Compile Include="Core/Runner.fs" />
     <Compile Include="Presentation/Plot.fs" />
     <Compile Include="Presentation/View.fs" />
     <Compile Include="Program.fs" />

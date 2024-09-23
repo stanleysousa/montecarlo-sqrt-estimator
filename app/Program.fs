@@ -3,8 +3,7 @@
 module Program =
 
     open System
-    open MCSqrtEstimator.Core.MonteCarlo.Models
-    open MCSqrtEstimator.Core.Simulation
+    open MCSqrtEstimator.Core
     open MCSqrtEstimator.Presentation.View
 
     // Model parameters

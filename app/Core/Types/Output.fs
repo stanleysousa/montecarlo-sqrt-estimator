@@ -1,4 +1,4 @@
-namespace MCSqrtEstimator.Core.Simulation.Types
+namespace MCSqrtEstimator.Core.Types
 
 type Output =
      {

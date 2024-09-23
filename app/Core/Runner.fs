@@ -1,9 +1,8 @@
-namespace MCSqrtEstimator.Core.Simulation
+namespace MCSqrtEstimator.Core
 
 module Runner =
 
-     open MCSqrtEstimator.Core
-     open MCSqrtEstimator.Core.Simulation.Types
+     open MCSqrtEstimator.Core.Types
 
      ///<summary>Calculates the relative error of the estimated value.</summary>
      ///<param name="est">Estimated value.</param>
@@ -21,7 +20,7 @@ module Runner =
      let private run input =
           let estimate = input.EstimatorFunc input.Value input.Samples
           match estimate with
-          | MonteCarlo.Types.Success est ->
+          | EstimateSuccess est ->
                let error = calculateRelativeError est input.ExpectedValue
                let result =
                     {
@@ -29,9 +28,9 @@ module Runner =
                          EstimatedValue = est
                          RelativeError = error
                     }
-               Success result
-          | MonteCarlo.Types.Failure reason ->
-               Failure reason
+               ResultSuccess result
+          | EstimateFailure reason ->
+               ResultFailure reason
 
 
      ///<summary>Runs Monte Carlo simulation for a given model implementation.</summary>
@@ -70,9 +69,9 @@ module Runner =
      ///<returns>Some output if the simulation was successful, None otherwise.</returns>
      let handleResult successFunc failureFunc =
           function
-               | Success output ->
+               | ResultSuccess output ->
                     successFunc output
                     Some output
-               | Failure errorMessage ->
-                    failureFunc errorMessage
+               | ResultFailure message ->
+                    failureFunc message
                     None
