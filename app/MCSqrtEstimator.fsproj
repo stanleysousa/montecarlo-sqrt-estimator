@@ -5,10 +5,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Core/MathUtils.fs" />
-    <Compile Include="Core/Types/Estimate.fs" />
     <Compile Include="Core/Types/Input.fs" />
     <Compile Include="Core/Types/Output.fs" />
-    <Compile Include="Core/Types/Result.fs" />
     <Compile Include="Core/McSqrt.fs" />
     <Compile Include="Core\McOther.fs" />
     <Compile Include="Core/Runner.fs" />

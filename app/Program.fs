@@ -7,16 +7,16 @@ module Program =
     open MCSqrtEstimator.Presentation.View
 
     // Model parameters
-    let inputValidationMessage = McSqrt.InputMessage
+    let inputErrorMessage = McSqrt.InputMessage
 
-    let estimatorFunc = McSqrt.estimate
+    let estimatorFunc = McSqrt.tryEstimate
 
     let expectedValueFunc = McSqrt.expectedValueFunc
 
     // Results handler functions
     let successFunc output = writeSummary McSqrt.ModelName output
 
-    let failureFunc errorMessage = printfn "Simulation failed. Reason: %s" errorMessage
+    let failureFunc message = printfn "Simulation failed. Reason: %s" message
 
     // Program auxiliary functions
     let execute v p =
@@ -39,7 +39,7 @@ module Program =
         match argv.Length with
         | 0
         | 1 ->
-            fail $"Missing arguments.\n{inputValidationMessage}" 
+            fail $"Missing arguments.\n{inputErrorMessage}" 
         | 2 ->
             try 
                 let v = argv.[0] |> float
@@ -47,9 +47,9 @@ module Program =
                 if v >= 1.0 then
                     execute v p
                 else
-                    fail $"Invalid argument 'v={argv.[0]}'.\n{inputValidationMessage}" 
+                    fail $"Invalid argument 'v={argv.[0]}'.\n{inputErrorMessage}" 
             with
                 | :? FormatException as e ->
-                    fail $"{e.Message}\n{inputValidationMessage}" 
+                    fail $"{e.Message}\n{inputErrorMessage}" 
         | _ ->
-            fail $"Too many arguments.\n{inputValidationMessage}" 
+            fail $"Too many arguments.\n{inputErrorMessage}" 

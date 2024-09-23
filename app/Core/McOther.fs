@@ -12,7 +12,7 @@ module McOther =
      let InputMessage =  "What are the input constraints?"
 
      let estimate v n =
-        EstimateFailure "NotImplementedException"
+        Error "NotImplementedException"
 
      ///<summary>Calculates the expected value for square root of 'v'.</summary>
      let expectedValueFunc = infinity 

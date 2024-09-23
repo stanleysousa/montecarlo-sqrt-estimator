@@ -28,39 +28,53 @@ module McSqrt =
           match v, y_i with
                | In -> 1
                | Out -> 0
+
+     ///<summary>Estimates the square root of 'v' using the Monte Carlo method.</summary>
+     ///<param name="v">The value for which the square root will be estimated.</param>
+     ///<param name="n">Number of samples.</param>
+     ///<param name="oneOverN">Sanitized value for 1/n.</param>
+     ///<returns>Estimated value for sqrt(v).</returns>
+     let private estimate v n oneOverN =
+          // Y -> iid sequence continuous in [0,1]
+          let y = createContinuousUniformSamples n 0 1
+          
+          // SUM{1_n}[g(Yi)]
+          let sumG =
+               y
+               |> Seq.map (indicator v)
+               |> Seq.sum
+               |>  float
+          
+          // Mn = 1/n * sumG
+          let mn = oneOverN * sumG
+          
+          // sqrt(v) = 1 / Mn
+          let sqrtv = mn |> invert
+          match sqrtv with
+          | Ok sqrtv ->
+               Ok sqrtv
+          | Error message ->
+               Error "The estimator failed to generate non-zero values for the indicator function"
   
      ///<summary>Estimates the square root of 'v' using the Monte Carlo method.</summary>
      ///<param name="v">The value for which the square root will be estimated.</param>
      ///<param name="n">Number of samples.</param>
+     ///<param name="oneOverN">Sanitized value for 1/n.</param>
      ///<returns>Estimated value for sqrt(v).</returns>
-     let estimate v n =
+     let tryEstimate v n =
           if n = 0 then
-               let message = "The number of samples must not be 0."
-               EstimateFailure message
+               Error("The number of samples must not be 0.")
           else
-               // Y -> iid sequence continuous in [0,1]
-               let y = createContinuousUniformSamples n 0 1
                // 1/n
                let oneOverN =
                     n
                     |> float
                     |> invert
-                    |> Option.defaultValue 0. // Only to satisfy the compiler, should never default since 'n' is validated above
-               // SUM{1_n}[g(Yi)]
-               let sumG =
-                    y
-                    |> Seq.map (indicator v)
-                    |> Seq.sum
-                    |>  float
-               // Mn = 1/n * sumG
-               let mn = oneOverN * sumG
-               // sqrt(v) = 1 / Mn
-               let sqrtv = mn |> invert
-               match sqrtv with
-               | Some value ->
-                    EstimateSuccess value
-               | None ->
-                    EstimateFailure "The estimator failed to generate non-zero values for the indicator function"
+               match oneOverN with
+               | Ok oneOverN ->
+                    estimate v n oneOverN
+               | Error message ->
+                    Error message
 
      ///<summary>Calculates the expected value for square root of 'v'.</summary>
      let expectedValueFunc = sqrt

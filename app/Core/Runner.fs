@@ -20,18 +20,17 @@ module Runner =
      let private run input =
           let estimate = input.EstimatorFunc input.Value input.Samples
           match estimate with
-          | EstimateSuccess est ->
-               let error = calculateRelativeError est input.ExpectedValue
+          | Ok estimate ->
+               let error = calculateRelativeError estimate input.ExpectedValue
                let result =
                     {
                          RunParameters = input
-                         EstimatedValue = est
+                         EstimatedValue = estimate
                          RelativeError = error
                     }
-               ResultSuccess result
-          | EstimateFailure reason ->
-               ResultFailure reason
-
+               Ok result
+          | Error reason ->
+               Error reason
 
      ///<summary>Runs Monte Carlo simulation for a given model implementation.</summary>
      ///<param name="v">The value for which estimation will be calculated.</param>
@@ -69,9 +68,9 @@ module Runner =
      ///<returns>Some output if the simulation was successful, None otherwise.</returns>
      let handleResult successFunc failureFunc =
           function
-               | ResultSuccess output ->
+               | Ok output ->
                     successFunc output
                     Some output
-               | ResultFailure message ->
+               | Error message ->
                     failureFunc message
                     None

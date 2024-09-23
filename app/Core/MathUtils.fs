@@ -16,9 +16,9 @@ module MathUtils =
     let invert x =
         // There is a chance for x to be zero when the number of samples is small, particularly when n<10
         if x = 0. then
-            None
+            Error "Cannot divide by 0"
         else
-            Some (1./x)
+            Ok (1./x)
     
     ///<summary>Creates samples from a continuous uniform distribution.</summary>
     ///<param name="n">Number of samples.</param>
@@ -28,5 +28,10 @@ module MathUtils =
     let createContinuousUniformSamples n lower upper =
           let y = n |> Array.zeroCreate
           Distributions.ContinuousUniform.Samples(Random.MersenneTwister(), y, lower, upper)
-          y 
+          y
+
+    let bind switchFunction twoTrackInput =
+        match twoTrackInput with
+        | Ok s -> switchFunction s
+        | Error e -> Failure e
 
