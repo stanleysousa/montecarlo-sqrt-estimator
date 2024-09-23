@@ -59,7 +59,7 @@ module Runner =
           [|
                for i in 1..p -> pown 10 i
           |]
-          |> Array.Parallel.map (fun n ->
+          |> Array.map (fun n ->
                runSingleSimulation v n estimatorFunc expectedValueFunc)
 
      ///<summary>Handles the simulation result.</summary>

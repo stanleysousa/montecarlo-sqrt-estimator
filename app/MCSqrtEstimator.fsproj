@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Core/TraceBuilder.fs" />
     <Compile Include="Core/MathUtils.fs" />
     <Compile Include="Core/Types/Input.fs" />
     <Compile Include="Core/Types/Output.fs" />

@@ -35,26 +35,30 @@ module McSqrt =
      ///<param name="oneOverN">Sanitized value for 1/n.</param>
      ///<returns>Estimated value for sqrt(v).</returns>
      let private estimate v n oneOverN =
-          // Y -> iid sequence continuous in [0,1]
-          let y = createContinuousUniformSamples n 0 1
-          
-          // SUM{1_n}[g(Yi)]
-          let sumG =
-               y
-               |> Seq.map (indicator v)
-               |> Seq.sum
-               |>  float
-          
-          // Mn = 1/n * sumG
-          let mn = oneOverN * sumG
-          
-          // sqrt(v) = 1 / Mn
-          let sqrtv = mn |> invert
-          match sqrtv with
-          | Ok sqrtv ->
-               Ok sqrtv
-          | Error message ->
-               Error "The estimator failed to generate non-zero values for the indicator function"
+          let trace = new TraceBuilder()
+          trace {
+               // Y -> iid sequence continuous in [0,1]
+               let y = createContinuousUniformSamples n 0 1
+               
+               // SUM{1_n}[g(Yi)]
+               let! sumG = // Tracing sumG to facilitate debugging in case of failure when computing the estimated value
+                    y
+                    |> Seq.map (indicator v)
+                    |> Seq.sum
+                    |>  float
+               
+               // Mn = 1/n * sumG
+               let mn = oneOverN * sumG
+               
+               // sqrt(v) = 1 / Mn
+               let sqrtv = mn |> invert
+               return 
+                    match sqrtv with
+                    | Ok sqrtv ->
+                         Ok sqrtv
+                    | Error message ->
+                         Error "The estimator failed to generate non-zero values for the indicator function"
+          }
   
      ///<summary>Estimates the square root of 'v' using the Monte Carlo method.</summary>
      ///<param name="v">The value for which the square root will be estimated.</param>
