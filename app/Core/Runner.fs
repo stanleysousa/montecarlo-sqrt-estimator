@@ -59,8 +59,14 @@ module Runner =
           [|
                for i in 1..p -> pown 10 i
           |]
+          // Could just do |> Array.Parallel.map (fun n ->runSingleSimulation v n estimatorFunc expectedValueFunc)
+          // Exploring async computation istead
           |> Array.map (fun n ->
-               runSingleSimulation v n estimatorFunc expectedValueFunc)
+               async {
+                    return runSingleSimulation v n estimatorFunc expectedValueFunc
+               })
+          |> Async.Parallel
+          |> Async.RunSynchronously
 
      ///<summary>Handles the simulation result.</summary>
      ///<param name="successFunc">Function to be executed for successfull simulations.</param>

@@ -35,7 +35,7 @@ module McSqrt =
      ///<param name="oneOverN">Sanitized value for 1/n.</param>
      ///<returns>Estimated value for sqrt(v).</returns>
      let private estimate v n oneOverN =
-          let trace = new TraceBuilder()
+          let trace = new Logging.LoggingBuilder()
           trace {
                // Y -> iid sequence continuous in [0,1]
                let y = createContinuousUniformSamples n 0 1
