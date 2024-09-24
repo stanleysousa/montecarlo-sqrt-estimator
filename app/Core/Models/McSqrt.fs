@@ -33,13 +33,13 @@ module McSqrt =
      ///<param name="oneOverN">Sanitized value for 1/n.</param>
      ///<returns>Estimated value for sqrt(v).</returns>
      let private estimate v n oneOverN =
-          let trace = new LoggingBuilder()
-          trace {
+          let logger = new LoggingBuilder()
+          logger {
                // Y -> iid sequence continuous in [0,1]
                let y = createContinuousUniformSamples n 0 1
                
                // SUM{1_n}[g(Yi)]
-               let! sumG = // Tracing sumG to facilitate debugging in case of failure when computing the estimated value
+               let! sumG = // Log sumG to facilitate debugging in case of failure when computing the estimated value
                     y
                     |> Seq.map (indicator v)
                     |> Seq.sum
@@ -52,9 +52,9 @@ module McSqrt =
                let sqrtv = mn |> invert
                return 
                     match sqrtv with
-                    | Ok sqrtv ->
+                    | Some sqrtv ->
                          Ok sqrtv
-                    | Error message ->
+                    | None ->
                          Error "The estimator failed to generate non-zero values for the indicator function"
           }
  
@@ -67,19 +67,18 @@ module McSqrt =
      ///<param name="oneOverN">Sanitized value for 1/n.</param>
      ///<returns>Estimated value for sqrt(v).</returns>
      let tryEstimate v n =
-          if n = 0 then
-               Error("The number of samples must not be 0.")
-          else
-               // 1/n
-               let oneOverN =
-                    n
-                    |> float
-                    |> invert
-               match oneOverN with
-               | Ok oneOverN ->
-                    estimate v n oneOverN
-               | Error message ->
-                    Error message
+          // 1/n
+          let oneOverN =
+               n
+               |> float
+               |> invert
+          match oneOverN with
+          | Some oneOverN ->
+               let estimatedValue = estimate v n oneOverN
+               estimatedValue
+          | None ->
+               let message = "Number of samples can't be 0"
+               Error message
 
      let getModel =
           {

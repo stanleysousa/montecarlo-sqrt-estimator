@@ -16,9 +16,9 @@ module Math =
     let invert x =
         // There is a chance for x to be zero when the number of samples is small, particularly when n<10
         if x = 0. then
-            Error "Cannot divide by 0"
+            None
         else
-            Ok (1./x)
+            Some (1./x)
     
     ///<summary>Creates samples from a continuous uniform distribution.</summary>
     ///<param name="n">Number of samples.</param>

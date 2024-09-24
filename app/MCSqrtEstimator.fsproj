@@ -5,7 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Core/Types/MCModel.fs" />
-    <Compile Include="Core/Types/MCModelOutput.fs" />
+    <Compile Include="Core/Types/SimulationResult.fs" />
     <Compile Include="Core/Utils/Logging.fs" />
     <Compile Include="Core/Utils/Math.fs" />
     <Compile Include="Core/Models/McSqrt.fs" />
