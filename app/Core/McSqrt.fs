@@ -8,7 +8,7 @@ module McSqrt =
      open MCSqrtEstimator.Core.Types
 
      [<Literal>]
-     let ModelName =  "sqrt"
+     let private name =  "sqrt"
 
      [<Literal>]
      let private InputMessage =  "Please provide 'v>=1.0 :float' and 'p :int' \n  v = a value for the square root to be estimated \n  p = the order of magnitude for the max number of samples"
@@ -113,8 +113,9 @@ module McSqrt =
 
      let getModel =
           {
-               inputValidatorFunc = validateInputs
-               estimatorFunc = tryEstimate
-               expectedValueFunc = expectedValue
+               ModelName = name
+               InputValidatorFunc = validateInputs
+               EstimatorFunc = tryEstimate
+               ExpectedValueFunc = expectedValue
           }
 

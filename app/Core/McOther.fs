@@ -6,10 +6,10 @@ module McOther =
      open MCSqrtEstimator.Core.Types
 
      [<Literal>]
-     let ModelName =  "other"
+     let private name =  "other"
 
      [<Literal>]
-     let InputMessage =  "What are the input constraints?"
+     let private inputMessage =  "What are the input constraints?"
 
      ///<summary>Validate inputs array according to model constraints</summary>
      let validateInputs args :  Result<array<string>, string> = Error "NotImplementedException"
@@ -21,7 +21,8 @@ module McOther =
 
      let getModel =
           {
-               inputValidatorFunc = validateInputs
-               estimatorFunc = estimate
-               expectedValueFunc = expectedValue
+               ModelName = name
+               InputValidatorFunc = validateInputs
+               EstimatorFunc = estimate
+               ExpectedValueFunc = expectedValue
           }

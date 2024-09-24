@@ -9,13 +9,13 @@ module Program =
     let model = McSqrt.getModel
 
     // Results handler functions
-    let successFunc output = writeSummary McSqrt.ModelName output
+    let successFunc output = writeSummary model.ModelName output
 
     let failureFunc message = printfn "Simulation failed. Reason: %s" message
 
     // Program auxiliary functions
     let execute v p =
-        Runner.runManySimulations v p model.estimatorFunc model.expectedValueFunc
+        Runner.runManySimulations v p model.EstimatorFunc model.ExpectedValueFunc
         |> Array.choose (Runner.handleResult successFunc failureFunc)
         |> plotRelativeErrors
         printfn "Simulation complete."
@@ -31,7 +31,7 @@ module Program =
     // Program EntyPoint
     [<EntryPoint>]
     let main argv =               
-        let inputValidationResult = model.inputValidatorFunc argv
+        let inputValidationResult = model.InputValidatorFunc argv
         match inputValidationResult with
         | Ok args ->
             let v = args.[0] |> float
