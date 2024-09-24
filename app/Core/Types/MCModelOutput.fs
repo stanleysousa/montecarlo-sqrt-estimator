@@ -1,8 +1,10 @@
 namespace MCSqrtEstimator.Core.Types
 
-type Output =
+type MCModelOutput =
      {
-          RunParameters : Input
+          Value : float
+          Samples : int
+          ExpectedValue: float
           EstimatedValue : float
           RelativeError : float
      }

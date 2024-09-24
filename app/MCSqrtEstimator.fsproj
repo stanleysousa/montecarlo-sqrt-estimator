@@ -4,9 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Core/Types/Input.fs" />
     <Compile Include="Core/Types/MCModel.fs" />
-    <Compile Include="Core/Types/Output.fs" />
+    <Compile Include="Core/Types/MCModelOutput.fs" />
     <Compile Include="Core/Utils/Logging.fs" />
     <Compile Include="Core/Utils/Math.fs" />
     <Compile Include="Core/Models/McSqrt.fs" />

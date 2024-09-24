@@ -16,7 +16,7 @@ module Program =
 
     // Program auxiliary functions
     let execute model args =
-        Runner.runManySimulations model args
+        Runner.runSimulations model args
         |> Array.choose (Runner.handleResult successFunc failureFunc)
         |> plotRelativeErrors
         printfn "Simulation complete."
