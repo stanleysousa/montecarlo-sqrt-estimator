@@ -22,7 +22,6 @@ module McOther =
      let getModel =
           {
                ModelName = name
-               InputValidatorFunc = validateInputs
                EstimatorFunc = estimate
                ExpectedValueFunc = expectedValue
           }

@@ -31,7 +31,7 @@ module Program =
     // Program EntyPoint
     [<EntryPoint>]
     let main argv =               
-        let inputValidationResult = model.InputValidatorFunc argv
+        let inputValidationResult = Runner.validateInputs argv
         match inputValidationResult with
         | Ok args ->
             execute model args

@@ -2,7 +2,33 @@ namespace MCSqrtEstimator.Core
 
 module Runner =
 
+     open System
      open MCSqrtEstimator.Core.Types
+     open MCSqrtEstimator.Core.MathUtils
+
+     [<Literal>]
+     let private InputMessage =  "Please provide 'v>=1.0 :float' and 'p :int' \n  v = a value for the square root to be estimated \n  p = the order of magnitude for the max number of samples"
+
+     // Input validation functions
+     let private validateFewArgs (args : string array) = 
+          if args.Length < 2 then Error $"Missing arguments.\n{InputMessage}"
+          else Ok args
+
+     let private validateManyArgs (args : string array) = 
+          if args.Length > 2 then Error $"Too many arguments.\n{InputMessage}"
+          else Ok args
+
+     let private validateArgsConstraints (args : string array) = 
+          try 
+               let v = args.[0] |> float
+               do args.[1] |> int |> ignore
+               if v >= 1.0 then
+                    Ok args
+               else
+                    Error $"Invalid argument 'v={args.[0]}'.\n{InputMessage}" 
+          with
+               | :? FormatException as e ->
+                    Error $"{e.Message}\n{InputMessage}"
 
      ///<summary>Calculates the relative error of the estimated value.</summary>
      ///<param name="est">Estimated value.</param>
@@ -17,7 +43,7 @@ module Runner =
      ///<summary>Runs the Monte Carlo simulation for a given model implementation.</summary>
      ///<param name="input">Simulation input containing the estimation function, value and number of samples.</param>
      ///<returns>Simulation output.</returns>
-     let private run input =
+     let private runEstimate input =
           let estimate = input.EstimatorFunc input.Value input.Samples
           match estimate with
           | Ok estimate ->
@@ -31,6 +57,12 @@ module Runner =
                Ok result
           | Error reason ->
                Error reason
+
+     ///<summary>Validate inputs array according to model constraints</summary>
+     let validateInputs = 
+             validateFewArgs
+             >> bind validateManyArgs
+             >> bind validateArgsConstraints
 
      ///<summary>Runs Monte Carlo simulation for a given model implementation.</summary>
      ///<param name="v">The value for which estimation will be calculated.</param>
@@ -47,7 +79,7 @@ module Runner =
                     Samples = n
                     ExpectedValue = expectedValue
                }
-          run input
+          runEstimate input
 
      ///<summary>Runs several parallel Monte Carlo simulations, with different number of samples, for a given model implementation.</summary>
      ///<param name="model">The model implementation.</param>
