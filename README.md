@@ -1,5 +1,6 @@
 # montecarlo-sqrt-estimator
-Estimates the square root of the number `v` using the Monte Carlo method with 10^`p` samples.
+
+Estimates the square root of the number `v` using the Monte Carlo method. Runs `p` simulations with 10^[1..p] samples each run.
 
 For more information see the [documentation](./docs/mc_sqrt.pdf).
 
