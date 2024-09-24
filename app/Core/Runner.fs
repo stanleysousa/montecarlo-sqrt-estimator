@@ -38,7 +38,7 @@ module Runner =
      ///<param name="estimatorFunc">Function that implements the model to be simulated.</param>
      ///<param name="expectedValueFunc">Function which calculates the expected value for the model.</param>
      ///<returns>Simulations outputs.</returns>
-     let runSingleSimulation v n estimatorFunc expectedValueFunc =
+     let private runSingleSimulation v n estimatorFunc expectedValueFunc =
           let expectedValue = expectedValueFunc v
           let input =
                {
@@ -50,12 +50,12 @@ module Runner =
           run input
 
      ///<summary>Runs several parallel Monte Carlo simulations, with different number of samples, for a given model implementation.</summary>
-     ///<param name="v">The value for which estimation will be calculated.</param>
-     ///<param name="p">Order of magnitude for the maximum number of samples.</param>
-     ///<param name="estimatorFunc">Function that implements the model to be simulated.</param>
-     ///<param name="expectedValueFunc">Function which calculates the expected value for the model.</param>
+     ///<param name="model">The model implementation.</param>
+     ///<param name="args">Input args.</param>
      ///<returns>Simulations outputs.</returns>
-     let runManySimulations v p estimatorFunc expectedValueFunc =
+     let runManySimulations (model : MCModel) (args : string array)  =
+          let v = args.[0] |> float
+          let p = args.[1] |> int
           [|
                for i in 1..p -> pown 10 i
           |]
@@ -63,7 +63,7 @@ module Runner =
           // Exploring async computation istead
           |> Array.map (fun n ->
                async {
-                    return runSingleSimulation v n estimatorFunc expectedValueFunc
+                    return runSingleSimulation v n model.EstimatorFunc model.ExpectedValueFunc
                })
           |> Async.Parallel
           |> Async.RunSynchronously

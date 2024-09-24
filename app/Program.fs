@@ -14,8 +14,8 @@ module Program =
     let failureFunc message = printfn "Simulation failed. Reason: %s" message
 
     // Program auxiliary functions
-    let execute v p =
-        Runner.runManySimulations v p model.EstimatorFunc model.ExpectedValueFunc
+    let execute model args =
+        Runner.runManySimulations model args
         |> Array.choose (Runner.handleResult successFunc failureFunc)
         |> plotRelativeErrors
         printfn "Simulation complete."
@@ -34,8 +34,6 @@ module Program =
         let inputValidationResult = model.InputValidatorFunc argv
         match inputValidationResult with
         | Ok args ->
-            let v = args.[0] |> float
-            let p = args.[1] |> int
-            execute v p
+            execute model args
         | Error message ->
             fail message
