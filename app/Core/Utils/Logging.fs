@@ -1,4 +1,4 @@
-namespace MCSqrtEstimator.Core
+namespace MCSqrtEstimator.Core.Utils
 
 module Logging =
 

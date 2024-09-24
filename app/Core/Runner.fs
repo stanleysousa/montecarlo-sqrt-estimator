@@ -4,7 +4,7 @@ module Runner =
 
      open System
      open MCSqrtEstimator.Core.Types
-     open MCSqrtEstimator.Core.MathUtils
+     open MCSqrtEstimator.Core.Utils.Math
 
      [<Literal>]
      let private InputMessage =  "Please provide 'v>=1.0 :float' and 'p :int' \n  v = a value for the square root to be estimated \n  p = the order of magnitude for the max number of samples"
@@ -43,7 +43,7 @@ module Runner =
      ///<summary>Runs the Monte Carlo simulation for a given model implementation.</summary>
      ///<param name="input">Simulation input containing the estimation function, value and number of samples.</param>
      ///<returns>Simulation output.</returns>
-     let private runEstimate input =
+     let private runEstimate (input : Input) =
           let estimate = input.EstimatorFunc input.Value input.Samples
           match estimate with
           | Ok estimate ->

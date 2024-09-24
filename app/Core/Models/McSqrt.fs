@@ -1,10 +1,11 @@
-namespace MCSqrtEstimator.Core
+namespace MCSqrtEstimator.Core.Models
 
 //For more information see the [documentation](./docs/mc_sqrt.pdf)
 module McSqrt =
 
-     open MCSqrtEstimator.Core.MathUtils
      open MCSqrtEstimator.Core.Types
+     open MCSqrtEstimator.Core.Utils.Logging
+     open MCSqrtEstimator.Core.Utils.Math
 
      [<Literal>]
      let private name =  "sqrt"
@@ -32,7 +33,7 @@ module McSqrt =
      ///<param name="oneOverN">Sanitized value for 1/n.</param>
      ///<returns>Estimated value for sqrt(v).</returns>
      let private estimate v n oneOverN =
-          let trace = new Logging.LoggingBuilder()
+          let trace = new LoggingBuilder()
           trace {
                // Y -> iid sequence continuous in [0,1]
                let y = createContinuousUniformSamples n 0 1

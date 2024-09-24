@@ -4,6 +4,7 @@ module Program =
 
     open System
     open MCSqrtEstimator.Core
+    open MCSqrtEstimator.Core.Models
     open MCSqrtEstimator.Presentation.View
 
     let model = McSqrt.getModel

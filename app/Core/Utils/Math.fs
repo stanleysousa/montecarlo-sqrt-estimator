@@ -1,6 +1,6 @@
-namespace MCSqrtEstimator.Core
+namespace MCSqrtEstimator.Core.Utils
 
-module MathUtils =
+module Math =
 
     open MathNet.Numerics
 

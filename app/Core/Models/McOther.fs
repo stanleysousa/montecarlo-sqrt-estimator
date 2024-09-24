@@ -1,4 +1,4 @@
-namespace MCSqrtEstimator.Core
+namespace MCSqrtEstimator.Core.Models
 
 //Another model implementation. Models could go into a models directory
 module McOther =
