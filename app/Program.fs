@@ -4,6 +4,7 @@ module Program =
 
     open System
     open MCSqrtEstimator.Core
+    open MCSqrtEstimator.Core.MathUtils
     open MCSqrtEstimator.Presentation.View
 
     // Model parameters
@@ -18,6 +19,27 @@ module Program =
 
     let failureFunc message = printfn "Simulation failed. Reason: %s" message
 
+    // Input validation functions
+    let validateFewArgs (args : string array) = 
+        if args.Length < 2 then Error $"Missing arguments.\n{inputErrorMessage}"
+        else Ok args
+
+    let validateManyArgs (args : string array) = 
+        if args.Length > 2 then Error $"Too many arguments.\n{inputErrorMessage}"
+        else Ok args
+
+    let validateArgsConstraints (args : string array) = 
+        try 
+            let v = args.[0] |> float
+            do args.[1] |> int |> ignore
+            if v >= 1.0 then
+                Ok args
+            else
+                Error $"Invalid argument 'v={args.[0]}'.\n{inputErrorMessage}" 
+        with
+            | :? FormatException as e ->
+                Error $"{e.Message}\n{inputErrorMessage}"
+
     // Program auxiliary functions
     let execute v p =
         Runner.runManySimulations v p estimatorFunc expectedValueFunc
@@ -29,27 +51,24 @@ module Program =
     let fail message =
         let fgColor = Console.ForegroundColor
         Console.ForegroundColor <- ConsoleColor.Red
-        printfn message
+        printfn "%s" message
         Console.ForegroundColor <- fgColor
         1 // Exit code
 
     // Program EntyPoint
     [<EntryPoint>]
     let main argv =
-        match argv.Length with
-        | 0
-        | 1 ->
-            fail $"Missing arguments.\n{inputErrorMessage}" 
-        | 2 ->
-            try 
-                let v = argv.[0] |> float
-                let p = argv.[1] |> int
-                if v >= 1.0 then
-                    execute v p
-                else
-                    fail $"Invalid argument 'v={argv.[0]}'.\n{inputErrorMessage}" 
-            with
-                | :? FormatException as e ->
-                    fail $"{e.Message}\n{inputErrorMessage}" 
-        | _ ->
-            fail $"Too many arguments.\n{inputErrorMessage}" 
+        let validateInput = 
+                validateFewArgs
+                >> bind validateManyArgs
+                >> bind validateArgsConstraints
+                
+        let inputValidationResult = validateInput argv
+        
+        match inputValidationResult with
+        | Ok args ->
+            let v = args.[0] |> float
+            let p = args.[1] |> int
+            execute v p
+        | Error message ->
+            fail message

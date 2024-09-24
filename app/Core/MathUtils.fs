@@ -30,8 +30,9 @@ module MathUtils =
           Distributions.ContinuousUniform.Samples(Random.MersenneTwister(), y, lower, upper)
           y
 
+    // Railway Oriented programmming. Credits to Scott Wlaschin
     let bind switchFunction twoTrackInput =
         match twoTrackInput with
         | Ok s -> switchFunction s
-        | Error e -> Failure e
+        | Error e -> Error e
 
