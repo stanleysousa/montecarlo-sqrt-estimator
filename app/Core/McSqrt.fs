@@ -3,14 +3,35 @@ namespace MCSqrtEstimator.Core
 //For more information see the [documentation](./docs/mc_sqrt.pdf)
 module McSqrt =
 
+     open System
      open MCSqrtEstimator.Core.MathUtils
-     open MCSqrtEstimator.Core.Types
 
      [<Literal>]
      let ModelName =  "sqrt"
 
      [<Literal>]
-     let InputMessage =  "Please provide 'v>=1.0 :float' and 'p :int' \n  v = a value for the square root to be estimated \n  p = the order of magnitude for the max number of samples"
+     let private InputMessage =  "Please provide 'v>=1.0 :float' and 'p :int' \n  v = a value for the square root to be estimated \n  p = the order of magnitude for the max number of samples"
+
+     // Input validation functions
+     let private validateFewArgs (args : string array) = 
+          if args.Length < 2 then Error $"Missing arguments.\n{InputMessage}"
+          else Ok args
+
+     let private validateManyArgs (args : string array) = 
+          if args.Length > 2 then Error $"Too many arguments.\n{InputMessage}"
+          else Ok args
+
+     let private validateArgsConstraints (args : string array) = 
+          try 
+               let v = args.[0] |> float
+               do args.[1] |> int |> ignore
+               if v >= 1.0 then
+                    Ok args
+               else
+                    Error $"Invalid argument 'v={args.[0]}'.\n{InputMessage}" 
+          with
+               | :? FormatException as e ->
+                    Error $"{e.Message}\n{InputMessage}"
 
      // Active pattern for the indicator function for learning reasons
      // Could be an Enum
@@ -59,7 +80,16 @@ module McSqrt =
                     | Error message ->
                          Error "The estimator failed to generate non-zero values for the indicator function"
           }
+
+     ///<summary>Validate inputs array according to model constraints</summary>
+     let validateInputs = 
+             validateFewArgs
+             >> bind validateManyArgs
+             >> bind validateArgsConstraints
   
+     ///<summary>Calculates the expected value for square root of 'v'.</summary>
+     let expectedValueFunc = sqrt
+
      ///<summary>Estimates the square root of 'v' using the Monte Carlo method.</summary>
      ///<param name="v">The value for which the square root will be estimated.</param>
      ///<param name="n">Number of samples.</param>
@@ -80,5 +110,3 @@ module McSqrt =
                | Error message ->
                     Error message
 
-     ///<summary>Calculates the expected value for square root of 'v'.</summary>
-     let expectedValueFunc = sqrt
