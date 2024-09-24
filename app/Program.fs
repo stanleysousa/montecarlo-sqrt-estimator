@@ -7,17 +7,22 @@ module Program =
     open MCSqrtEstimator.Core.Models
     open MCSqrtEstimator.Presentation.View
 
+    // Model
     let model = McSqrt.getModel
 
-    // Results handler functions
+    let runModel = Runner.runSimulations model
+
+    // Simulation results handler
     let successFunc output = writeSummary model.ModelName output
 
     let failureFunc message = printfn "Simulation failed. Reason: %s" message
 
+    let handleResult = Runner.handleResult successFunc failureFunc
+
     // Program auxiliary functions
-    let execute model args =
-        Runner.runSimulations model args
-        |> Array.choose (Runner.handleResult successFunc failureFunc)
+    let execute args =
+        runModel args
+        |> Array.choose handleResult
         |> plotRelativeErrors
         printfn "Simulation complete."
         0 // Exit code
@@ -35,6 +40,6 @@ module Program =
         let inputValidationResult = Runner.validateInputs argv
         match inputValidationResult with
         | Ok args ->
-            execute model args
+            execute args
         | Error message ->
             fail message

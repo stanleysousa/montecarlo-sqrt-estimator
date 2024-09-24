@@ -1,6 +1,6 @@
 namespace MCSqrtEstimator.Core.Types
 
-type MCModelOutput =
+type SimulationResult =
      {
           Value : float
           Samples : int
