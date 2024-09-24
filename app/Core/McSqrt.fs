@@ -5,6 +5,7 @@ module McSqrt =
 
      open System
      open MCSqrtEstimator.Core.MathUtils
+     open MCSqrtEstimator.Core.Types
 
      [<Literal>]
      let ModelName =  "sqrt"
@@ -88,7 +89,7 @@ module McSqrt =
              >> bind validateArgsConstraints
   
      ///<summary>Calculates the expected value for square root of 'v'.</summary>
-     let expectedValueFunc = sqrt
+     let expectedValue = sqrt
 
      ///<summary>Estimates the square root of 'v' using the Monte Carlo method.</summary>
      ///<param name="v">The value for which the square root will be estimated.</param>
@@ -109,4 +110,11 @@ module McSqrt =
                     estimate v n oneOverN
                | Error message ->
                     Error message
+
+     let getModel =
+          {
+               inputValidatorFunc = validateInputs
+               estimatorFunc = tryEstimate
+               expectedValueFunc = expectedValue
+          }
 

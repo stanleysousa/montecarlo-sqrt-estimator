@@ -12,9 +12,16 @@ module McOther =
      let InputMessage =  "What are the input constraints?"
 
      ///<summary>Validate inputs array according to model constraints</summary>
-     let validateInput = Error "NotImplementedException"
+     let validateInputs args :  Result<array<string>, string> = Error "NotImplementedException"
 
      ///<summary>Calculates the expected value for square root of 'v'.</summary>
-     let expectedValueFunc = infinity
+     let expectedValue v = infinity
 
      let estimate v n = Error "NotImplementedException"
+
+     let getModel =
+          {
+               inputValidatorFunc = validateInputs
+               estimatorFunc = estimate
+               expectedValueFunc = expectedValue
+          }

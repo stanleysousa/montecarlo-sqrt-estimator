@@ -6,12 +6,7 @@ module Program =
     open MCSqrtEstimator.Core
     open MCSqrtEstimator.Presentation.View
 
-    // Model functions
-    let inputValidatorFunc  = McSqrt.validateInputs
-
-    let estimatorFunc = McSqrt.tryEstimate
-
-    let expectedValueFunc = McSqrt.expectedValueFunc
+    let model = McSqrt.getModel
 
     // Results handler functions
     let successFunc output = writeSummary McSqrt.ModelName output
@@ -20,7 +15,7 @@ module Program =
 
     // Program auxiliary functions
     let execute v p =
-        Runner.runManySimulations v p estimatorFunc expectedValueFunc
+        Runner.runManySimulations v p model.estimatorFunc model.expectedValueFunc
         |> Array.choose (Runner.handleResult successFunc failureFunc)
         |> plotRelativeErrors
         printfn "Simulation complete."
@@ -36,7 +31,7 @@ module Program =
     // Program EntyPoint
     [<EntryPoint>]
     let main argv =               
-        let inputValidationResult = inputValidatorFunc argv
+        let inputValidationResult = model.inputValidatorFunc argv
         match inputValidationResult with
         | Ok args ->
             let v = args.[0] |> float
